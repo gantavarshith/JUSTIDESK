@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -284,7 +286,25 @@ const AIChatWithLawyer: React.FC = () => {
                 border: msg.role === 'ai' ? '1px solid #2e2e2e' : 'none',
               }}
             >
-              {msg.text}
+              {msg.role === 'ai' ? (
+                <div style={{ color: '#dedede' }}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ node, ...props }) => <p style={{ margin: '0 0 12px 0' }} {...props} />,
+                      h3: ({ node, ...props }) => <h3 style={{ color: '#FFA116', margin: '16px 0 8px 0', fontSize: '15px', fontWeight: 600 }} {...props} />,
+                      ul: ({ node, ...props }) => <ul style={{ paddingLeft: '20px', margin: '0 0 12px 0', listStyleType: 'disc' }} {...props} />,
+                      ol: ({ node, ...props }) => <ol style={{ paddingLeft: '20px', margin: '0 0 12px 0', listStyleType: 'decimal' }} {...props} />,
+                      li: ({ node, ...props }) => <li style={{ marginBottom: '6px' }} {...props} />,
+                      strong: ({ node, ...props }) => <strong style={{ color: '#fff', fontWeight: 600 }} {...props} />,
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                msg.text
+              )}
 
               {/* Actions row for AI messages */}
               {msg.role === 'ai' && (
