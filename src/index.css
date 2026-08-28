@@ -6,246 +6,92 @@
 
 @layer base {
   :root {
-    /* JusticeDesk Design System - refined palette */
-    /* Primary: Deep Navy - trust and authority */
-    --primary: 212 62% 14%; /* deep navy */
-    --primary-foreground: 210 20% 98%;
+    --background: 0 0% 11%;
+    --foreground: 0 0% 93%;
 
-    /* Secondary: Professional Teal - actionable but calm */
-    --secondary: 174 48% 30%;
-    --secondary-foreground: 210 20% 98%;
+    --card: 0 0% 14%;
+    --card-foreground: 0 0% 93%;
 
-    /* Accent: Warm Gold - highlights */
-    --accent: 42 85% 50%;
-    --accent-foreground: 212 62% 14%;
+    --popover: 0 0% 14%;
+    --popover-foreground: 0 0% 93%;
 
-    /* Backgrounds & Surfaces */
-    --background: 210 20% 98%; /* very light neutral */
-    --foreground: 212 62% 14%;
+    --primary: 37 100% 53%;
+    --primary-foreground: 0 0% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 212 62% 14%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 212 62% 14%;
+    --muted: 0 0% 17%;
+    --muted-foreground: 0 0% 60%;
 
-    /* Muted */
-    --muted: 210 18% 94%;
-    --muted-foreground: 212 14% 45%;
+    --accent: 37 100% 53%;
+    --accent-foreground: 0 0% 10%;
 
-    /* Borders & Inputs */
-    --border: 213 18% 92%;
-    --input: 213 18% 92%;
-    --ring: 174 48% 30%;
-
-    /* Destructive */
-    --destructive: 358 65% 55%;
+    --destructive: 349 97% 63%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Sidebar */
-    --sidebar-background: 212 62% 10%; /* darker navy */
-    --sidebar-foreground: 210 20% 96%;
-    --sidebar-primary: 174 48% 28%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 212 62% 12%;
-    --sidebar-accent-foreground: 210 20% 96%;
-    --sidebar-border: 212 62% 13%;
-    --sidebar-ring: 174 48% 28%;
+    --border: 0 0% 22%;
+    --input: 0 0% 17%;
+    --ring: 37 100% 53%;
 
-    /* Custom JusticeDesk Tokens */
-    --justice-navy: 212 62% 14%;
-    --justice-teal: 174 48% 30%;
-    --justice-gold: 42 85% 50%;
-    --justice-light: 210 20% 98%;
-    --justice-dark: 212 62% 8%;
+    --sidebar-background: 0 0% 11%;
+    --sidebar-foreground: 0 0% 80%;
+    --sidebar-primary: 37 100% 53%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-accent-foreground: 0 0% 93%;
+    --sidebar-border: 0 0% 18%;
 
-    --radius: 0.75rem;
-
-    /* Shadows - subtler, neutral tones */
-    --shadow-sm: 0 1px 2px 0 hsl(212 14% 10% / 0.04);
-    --shadow-md: 0 6px 12px -4px hsl(212 14% 10% / 0.06), 0 2px 4px -2px hsl(212 14% 10% / 0.04);
-    --shadow-lg: 0 12px 24px -6px hsl(212 14% 10% / 0.08), 0 4px 8px -4px hsl(212 14% 10% / 0.05);
-    --shadow-xl: 0 24px 48px -12px hsl(212 14% 10% / 0.10), 0 8px 16px -8px hsl(212 14% 10% / 0.06);
-
-    /* Gradients - subtle, professional */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(212 62% 18%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(var(--background)) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(42 75% 45%) 100%);
-    --gradient-teal: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(174 40% 24%) 100%);
-  }
-
-  .dark {
-    --background: 212 62% 10%;
-    --foreground: 210 20% 96%;
-    --card: 212 62% 12%;
-    --card-foreground: 210 20% 96%;
-    --popover: 212 62% 12%;
-    --popover-foreground: 210 20% 96%;
-    --primary: 210 20% 96%;
-    --primary-foreground: 212 62% 10%;
-    --secondary: 174 48% 32%;
-    --secondary-foreground: 210 20% 96%;
-    --muted: 212 50% 16%;
-    --muted-foreground: 210 20% 72%;
-    --accent: 42 85% 50%;
-    --accent-foreground: 212 62% 14%;
-    --destructive: 358 65% 50%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 212 62% 14%;
-    --input: 212 62% 14%;
-    --ring: 174 48% 28%;
+    --radius: 0.5rem;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  
-  html {
-    scroll-behavior: smooth;
-  }
-  
+  * { @apply border-border box-border; }
+  html { scroll-behavior: smooth; }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-}
-
-@layer components {
-  /* Card Hover Effect */
-  .card-hover {
-    @apply transition-all duration-300 ease-out;
-  }
-  
-  .card-hover:hover {
-    @apply -translate-y-1;
-    box-shadow: var(--shadow-lg);
-  }
-  
-  /* Glass Effect */
-  .glass {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
-  }
-  
-  /* Justice Gold Highlight */
-  .gold-highlight {
-    background: linear-gradient(135deg, hsl(var(--justice-gold)) 0%, hsl(38 85% 45%) 100%);
-    @apply text-primary;
-  }
-  
-  /* Gradient Text */
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--justice-teal)) 0%, hsl(var(--justice-gold)) 100%);
-  }
-  
-  /* Sidebar Active State */
-  .sidebar-active {
-    @apply bg-sidebar-accent text-sidebar-primary border-l-2 border-sidebar-primary;
-  }
-  
-  /* Bottom Nav Active */
-  .bottom-nav-active {
-    @apply text-secondary;
-  }
-  
-  /* Form Input Focus */
-  .input-focus {
-    @apply focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all duration-200;
+    background-color: #1c1c1c;
+    color: #ededed;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
   }
 }
 
 @layer utilities {
-  /* Animation Utilities */
   .animate-fade-up {
-    animation: fadeUp 0.5s ease-out forwards;
+    animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  
   .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: fadeIn 0.35s ease both;
   }
-  
-  .animate-slide-in-right {
-    animation: slideInRight 0.4s ease-out forwards;
-  }
-  
-  .animate-slide-in-left {
-    animation: slideInLeft 0.4s ease-out forwards;
-  }
-  
   .animate-scale-in {
-    animation: scaleIn 0.3s ease-out forwards;
+    animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  .card-hover {
+    @apply transition-all duration-200;
   }
-  
-  /* Stagger children */
-  .stagger-children > * {
-    opacity: 0;
-    animation: fadeUp 0.5s ease-out forwards;
+  .card-hover:hover {
+    border-color: rgba(255, 161, 22, 0.4) !important;
+    transform: translateY(-1px);
   }
-  
-  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
-  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
-  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
-  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
-  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
-  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+  .gradient-orange-text {
+    background: linear-gradient(90deg, #FFA116, #FF8C00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
 }

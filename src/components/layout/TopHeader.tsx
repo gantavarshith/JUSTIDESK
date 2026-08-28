@@ -31,47 +31,31 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
 
   useEffect(() => {
     if (user?.id) {
-      const userActivities = userDataStore.getActivities(user.id);
-      setActivities(userActivities);
-
-      // Load read notification IDs for this user
+      setActivities(userDataStore.getActivities(user.id));
       try {
         const storedRead = localStorage.getItem(`justicedesk_user_read_notifications_${user.id}`);
-        if (storedRead) {
-          setReadIds(JSON.parse(storedRead));
-        }
+        if (storedRead) setReadIds(JSON.parse(storedRead));
       } catch (e) {}
     }
   }, [user]);
 
-  const saveReadIds = (newReadIds: string[]) => {
-    setReadIds(newReadIds);
+  const saveReadIds = (ids: string[]) => {
+    setReadIds(ids);
     if (user?.id) {
-      try {
-        localStorage.setItem(`justicedesk_user_read_notifications_${user.id}`, JSON.stringify(newReadIds));
-      } catch (e) {}
+      try { localStorage.setItem(`justicedesk_user_read_notifications_${user.id}`, JSON.stringify(ids)); } catch (e) {}
     }
   };
 
   const unreadCount = activities.filter((a) => !readIds.includes(a.id)).length;
 
   const markAsRead = (id: string) => {
-    if (!readIds.includes(id)) {
-      saveReadIds([...readIds, id]);
-    }
+    if (!readIds.includes(id)) saveReadIds([...readIds, id]);
   };
-
-  const markAllRead = () => {
-    const allIds = activities.map((a) => a.id);
-    saveReadIds(allIds);
-  };
+  const markAllRead = () => saveReadIds(activities.map((a) => a.id));
 
   const handleNotificationClick = (item: ActivityItem) => {
-    if (item.caseId) {
-      navigate(`/citizen/cases/${item.caseId}`);
-    } else if (item.documentId) {
-      navigate(`/citizen/documents/${item.documentId}`);
-    }
+    if (item.caseId) navigate(`/citizen/cases/${item.caseId}`);
+    else if (item.documentId) navigate(`/citizen/documents/${item.documentId}`);
     markAsRead(item.id);
   };
 
@@ -82,75 +66,76 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-card/80 backdrop-blur-md border-b border-border">
-      <div className="flex items-center justify-between h-16 px-4 lg:px-6">
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden"
-          onClick={onMenuClick}
-        >
-          <Menu className="w-5 h-5" />
+    <header className="sticky top-0 z-40 h-14"
+      style={{ backgroundColor: '#1a1a1a', borderBottom: '1px solid #2d2d2d', backdropFilter: 'blur(12px)' }}>
+      <div className="flex items-center justify-between h-full px-4 lg:px-6">
+
+        {/* Mobile menu */}
+        <Button variant="ghost" size="icon" className="lg:hidden hover:bg-[#262626]" onClick={onMenuClick}>
+          <Menu className="w-5 h-5" style={{ color: '#ababab' }} />
         </Button>
 
-        {/* Greeting - Desktop */}
+        {/* Greeting */}
         <div className="hidden lg:block">
-          <p className="text-xs text-muted-foreground">{getGreeting()}</p>
-          <h2 className="font-semibold text-sm text-foreground">{user?.name || 'Citizen'}</h2>
+          <p className="text-xs" style={{ color: '#555' }}>{getGreeting()},</p>
+          <p className="text-sm font-semibold" style={{ color: '#eff2f6' }}>{user?.name || 'Citizen'}</p>
         </div>
 
-        {/* Search Bar - Desktop */}
-        <div className="hidden md:flex flex-1 max-w-md mx-8">
+        {/* Search */}
+        <div className="hidden md:flex flex-1 max-w-sm mx-8">
           <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: '#555' }} />
+            <input
               placeholder="Search cases, documents, rights..."
-              className="pl-10 bg-muted/50 border-0 focus-visible:bg-card text-xs"
+              className="w-full pl-9 pr-4 py-2 text-xs rounded-lg outline-none transition-all"
+              style={{ backgroundColor: '#262626', border: '1px solid #3e3e3e', color: '#eff2f6', fontFamily: "'Inter', sans-serif" }}
+              onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = '#FFA116')}
+              onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = '#3e3e3e')}
             />
           </div>
         </div>
 
-        {/* Right Actions */}
+        {/* Right actions */}
         <div className="flex items-center gap-2">
-          {/* Notifications */}
+          {/* Notification Bell */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                <Bell className="w-5 h-5 text-foreground/80" />
+              <button className="relative w-9 h-9 flex items-center justify-center rounded-lg transition-all"
+                style={{ backgroundColor: 'transparent' }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = '#262626')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = 'transparent')}>
+                <Bell className="w-4.5 h-4.5" style={{ width: 18, height: 18, color: '#ababab' }} />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-semibold text-white bg-accent rounded-full">
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[9px] font-bold rounded-full"
+                    style={{ backgroundColor: '#FFA116', color: '#1a1a1a' }}>
                     {unreadCount}
                   </span>
                 )}
-              </Button>
+              </button>
             </PopoverTrigger>
-
-            <PopoverContent className="w-80 p-3" align="end">
-              <div className="flex items-center justify-between mb-2 pb-2 border-b border-border">
-                <h4 className="font-semibold text-xs">Notifications</h4>
+            <PopoverContent className="w-80 p-0 overflow-hidden" align="end"
+              style={{ backgroundColor: '#262626', border: '1px solid #3e3e3e', borderRadius: 10 }}>
+              <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #3e3e3e' }}>
+                <p className="text-xs font-semibold" style={{ color: '#eff2f6' }}>Notifications</p>
                 {unreadCount > 0 && (
-                  <button className="text-[11px] text-primary hover:underline" onClick={markAllRead}>Mark all read</button>
+                  <button className="text-[11px] font-medium transition-colors" style={{ color: '#FFA116' }} onClick={markAllRead}>
+                    Mark all read
+                  </button>
                 )}
               </div>
-              <div className="space-y-2 max-h-60 overflow-auto">
-                {activities.length === 0 && (
-                  <div className="text-xs text-muted-foreground py-3 text-center">No notifications yet</div>
-                )}
-                {activities.map((act) => {
+              <div className="max-h-64 overflow-auto divide-y" style={{ borderColor: '#2d2d2d' }}>
+                {activities.length === 0 ? (
+                  <p className="text-xs text-center py-6" style={{ color: '#555' }}>No notifications yet</p>
+                ) : activities.map((act) => {
                   const isRead = readIds.includes(act.id);
                   return (
-                    <div
-                      key={act.id}
-                      onClick={() => handleNotificationClick(act)}
-                      className={`p-2 rounded-md cursor-pointer hover:bg-muted/60 transition-colors ${isRead ? 'opacity-60' : 'bg-primary/5 border-l-2 border-primary'}`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-medium text-xs text-foreground">{act.title}</div>
-                          <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{act.description}</div>
-                        </div>
-                      </div>
+                    <div key={act.id} onClick={() => handleNotificationClick(act)}
+                      className="px-4 py-3 cursor-pointer transition-all"
+                      style={{ backgroundColor: isRead ? 'transparent' : 'rgba(255,161,22,0.04)', borderLeft: isRead ? 'none' : '2px solid #FFA116' }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = '#2d2d2d')}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = isRead ? 'transparent' : 'rgba(255,161,22,0.04)')}>
+                      <p className="text-xs font-medium" style={{ color: '#eff2f6', opacity: isRead ? 0.5 : 1 }}>{act.title}</p>
+                      <p className="text-[11px] mt-0.5" style={{ color: '#555', opacity: isRead ? 0.5 : 1 }}>{act.description}</p>
                     </div>
                   );
                 })}
@@ -158,34 +143,40 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
             </PopoverContent>
           </Popover>
 
-          {/* Profile Dropdown / Avatar */}
+          {/* Profile avatar */}
           <Popover>
             <PopoverTrigger asChild>
-              <button className="w-9 h-9 rounded-full overflow-hidden border border-border hover:ring-2 hover:ring-primary/20 transition-all">
+              <button className="w-8 h-8 rounded-full overflow-hidden transition-all"
+                style={{ border: '1.5px solid #3e3e3e' }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = '#FFA116')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = '#3e3e3e')}>
                 <Avatar className="w-full h-full">
                   <AvatarImage src={user?.avatar} />
-                  <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">
+                  <AvatarFallback className="text-xs font-bold" style={{ backgroundColor: '#FFA116', color: '#1a1a1a' }}>
                     {(user?.name || 'U').charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-56 p-2" align="end">
-              <div className="px-3 py-2 border-b border-border mb-1">
-                <p className="text-xs font-semibold text-foreground truncate">{user?.name || 'User'}</p>
-                <p className="text-[11px] text-muted-foreground truncate">{user?.email || ''}</p>
+            <PopoverContent className="w-52 p-1 overflow-hidden" align="end"
+              style={{ backgroundColor: '#262626', border: '1px solid #3e3e3e', borderRadius: 10 }}>
+              <div className="px-3 py-2.5 mb-1" style={{ borderBottom: '1px solid #2d2d2d' }}>
+                <p className="text-xs font-semibold truncate" style={{ color: '#eff2f6' }}>{user?.name || 'User'}</p>
+                <p className="text-[11px] truncate" style={{ color: '#ababab' }}>{user?.email}</p>
               </div>
-              <button
-                onClick={() => navigate('/profile')}
-                className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-md text-xs hover:bg-muted text-foreground transition-colors"
-              >
+              <button onClick={() => navigate('/profile')}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-xs transition-all"
+                style={{ color: '#ababab' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '#2d2d2d'; (e.currentTarget as HTMLElement).style.color = '#eff2f6'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#ababab'; }}>
                 <User className="w-3.5 h-3.5" />
                 View & Edit Profile
               </button>
-              <button
-                onClick={handleSignOut}
-                className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-md text-xs hover:bg-destructive/10 text-destructive transition-colors mt-1"
-              >
+              <button onClick={handleSignOut}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-xs transition-all mt-0.5"
+                style={{ color: '#ababab' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,55,95,0.08)'; (e.currentTarget as HTMLElement).style.color = '#ff375f'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#ababab'; }}>
                 <LogOut className="w-3.5 h-3.5" />
                 Sign Out
               </button>

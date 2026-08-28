@@ -1,30 +1,31 @@
 import React from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Scale, 
-  FileText, 
-  FolderOpen, 
+import {
+  LayoutDashboard,
+  Scale,
+  FileText,
+  FolderOpen,
   Calendar,
   ClipboardList,
   Bot,
   Settings,
   LogOut,
   HelpCircle,
-  FilePlus
+  FilePlus,
+  Shield,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 
 const navItems = [
   { path: '/citizen/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/rights', label: 'Know Your Rights', icon: Scale },
-  { path: '/citizen/file-case', label: 'File a Case', icon: FilePlus },
+  { path: '/rights', label: 'Know Your Rights', icon: Shield },
+  { path: '/citizen/file-case', label: 'File a Case', icon: FilePlus, badge: 'New' },
   { path: '/citizen/cases', label: 'My Cases', icon: FolderOpen },
   { path: '/citizen/documents', label: 'Documents', icon: FileText },
   { path: '/citizen/consultations', label: 'Consultations', icon: Calendar },
   { path: '/citizen/forms', label: 'Saved Forms', icon: ClipboardList },
-  { path: '/citizen/ai-chat', label: 'AI Legal Assistant', icon: Bot },
+  { path: '/citizen/ai-chat', label: 'AI Legal Counsel', icon: Bot },
 ];
 
 const bottomItems = [
@@ -34,74 +35,114 @@ const bottomItems = [
 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 h-screen bg-sidebar fixed left-0 top-0 border-r border-sidebar-border">
+    <aside
+      className="hidden lg:flex flex-col w-64 h-screen fixed left-0 top-0 z-30"
+      style={{ backgroundColor: '#1a1a1a', borderRight: '1px solid #2d2d2d' }}
+    >
       {/* Logo */}
-      <div className="p-6 border-b border-sidebar-border">
-        <NavLink to="/citizen/dashboard" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-sidebar-accent flex items-center justify-center">
-            <Scale className="w-5 h-5 text-sidebar-primary" />
+      <div className="px-5 py-5 flex items-center gap-2.5" style={{ borderBottom: '1px solid #2d2d2d' }}>
+        <NavLink to="/citizen/dashboard" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#FFA116' }}>
+            <Scale style={{ width: 17, height: 17, color: '#1a1a1a' }} />
           </div>
-          <span className="font-semibold text-xl text-sidebar-foreground">
-            Justice<span className="text-sidebar-primary">Desk</span>
-          </span>
+          <div>
+            <span className="font-bold text-lg tracking-tight" style={{ color: '#eff2f6' }}>
+              Justice<span style={{ color: '#FFA116' }}>Desk</span>
+            </span>
+          </div>
         </NavLink>
       </div>
 
-      {/* Main Navigation */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      {/* User pill */}
+      {user && (
+        <div className="mx-4 mt-4 px-3 py-2.5 rounded-lg flex items-center gap-2.5"
+          style={{ backgroundColor: '#262626', border: '1px solid #3e3e3e' }}>
+          <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+            style={{ backgroundColor: '#FFA116', color: '#1a1a1a' }}>
+            {(user.name || 'U').charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold truncate" style={{ color: '#eff2f6' }}>{user.name}</p>
+            <p className="text-[10px] capitalize truncate" style={{ color: '#ababab' }}>{user.role || 'Citizen'}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Main nav */}
+      <nav className="flex-1 px-3 pt-4 space-y-0.5 overflow-y-auto">
+        <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#555' }}>Navigation</p>
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive =
+            location.pathname === item.path ||
+            (item.path !== '/citizen/dashboard' && location.pathname.startsWith(item.path));
           return (
             <NavLink
               key={item.path}
               to={item.path}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-                isActive
-                  ? "bg-sidebar-accent text-sidebar-primary font-medium border-l-2 border-sidebar-primary"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-              )}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 group"
+              style={{
+                backgroundColor: isActive ? 'rgba(255,161,22,0.12)' : 'transparent',
+                color: isActive ? '#FFA116' : '#ababab',
+                fontWeight: isActive ? 600 : 400,
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = '#262626';
+                  (e.currentTarget as HTMLElement).style.color = '#eff2f6';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+                  (e.currentTarget as HTMLElement).style.color = '#ababab';
+                }
+              }}
             >
-              <item.icon className="w-5 h-5" />
-              <span>{item.label}</span>
+              <item.icon className="w-4 h-4 shrink-0" />
+              <span className="flex-1">{item.label}</span>
+              {item.badge && (
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                  style={{ backgroundColor: isActive ? 'rgba(255,161,22,0.2)' : 'rgba(255,161,22,0.15)', color: '#FFA116' }}>
+                  {item.badge}
+                </span>
+              )}
+              {isActive && <div className="absolute right-0 w-0.5 h-6 rounded-l-full" style={{ backgroundColor: '#FFA116' }} />}
             </NavLink>
           );
         })}
       </nav>
 
-      {/* Bottom Navigation */}
-      <div className="p-4 border-t border-sidebar-border space-y-1">
+      {/* Bottom nav */}
+      <div className="px-3 py-3 space-y-0.5" style={{ borderTop: '1px solid #2d2d2d' }}>
+        <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#555' }}>Support</p>
         {bottomItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <NavLink
               key={item.path}
               to={item.path}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-                isActive
-                  ? "bg-sidebar-accent text-sidebar-primary font-medium"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-              )}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
+              style={{ color: isActive ? '#FFA116' : '#ababab', backgroundColor: isActive ? 'rgba(255,161,22,0.1)' : 'transparent' }}
+              onMouseEnter={(e) => { if (!isActive) { (e.currentTarget as HTMLElement).style.backgroundColor = '#262626'; (e.currentTarget as HTMLElement).style.color = '#eff2f6'; } }}
+              onMouseLeave={(e) => { if (!isActive) { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#ababab'; } }}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-4 h-4 shrink-0" />
               <span>{item.label}</span>
             </NavLink>
           );
         })}
-        
         <button
-          onClick={() => {
-            try { signOut(); } catch (e) {}
-            navigate('/login');
-          }}
-          className="flex items-center gap-3 px-4 py-3 rounded-lg w-full text-left text-sidebar-foreground/70 hover:bg-destructive/10 hover:text-destructive transition-all duration-200"
+          onClick={() => { try { signOut(); } catch (e) {} navigate('/login'); }}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg w-full text-left text-sm transition-all duration-150"
+          style={{ color: '#ababab' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,55,95,0.08)'; (e.currentTarget as HTMLElement).style.color = '#ff375f'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#ababab'; }}
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4 shrink-0" />
           <span>Sign Out</span>
         </button>
       </div>

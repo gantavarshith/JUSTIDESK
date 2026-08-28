@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Scale, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
+import { Scale, Eye, EyeOff, ArrowRight, ShieldCheck, Bot, FileSearch } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { justiceQuotes } from '@/data/mockData';
@@ -27,223 +23,173 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
-      toast({
-        title: 'Missing Fields',
-        description: 'Please fill in both email and password.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Missing Fields', description: 'Please fill in both email and password.', variant: 'destructive' });
       return;
     }
-
     setSubmitting(true);
     try {
       const res = await login(email, password, role);
       if (res.success) {
-        toast({
-          title: 'Welcome Back!',
-          description: `Signed in successfully as ${role}.`,
-        });
-        if (role === 'citizen') {
-          navigate('/citizen/dashboard');
-        } else {
-          navigate('/lawyer/dashboard');
-        }
+        toast({ title: 'Welcome Back!', description: `Signed in successfully.` });
+        navigate(role === 'citizen' ? '/citizen/dashboard' : '/lawyer/dashboard');
       } else {
-        toast({
-          title: 'Sign In Failed',
-          description: res.error || 'Invalid credentials.',
-          variant: 'destructive',
-        });
+        toast({ title: 'Sign In Failed', description: res.error || 'Invalid credentials.', variant: 'destructive' });
       }
-    } catch (err) {
-      toast({
-        title: 'Error',
-        description: 'An unexpected error occurred during sign in.',
-        variant: 'destructive',
-      });
+    } catch {
+      toast({ title: 'Error', description: 'An unexpected error occurred.', variant: 'destructive' });
     } finally {
       setSubmitting(false);
     }
   };
 
-  return (
-    <div className="min-h-screen bg-background flex">
-      {/* Left Panel - Hero Section */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
-        
-        <div className="relative z-10 flex flex-col justify-center px-12 xl:px-20 text-primary-foreground">
-          <div className="animate-fade-up">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-primary-foreground/10 flex items-center justify-center backdrop-blur-sm">
-                <Scale className="w-7 h-7 text-primary-foreground" />
-              </div>
-              <span className="text-3xl font-bold">
-                Justice<span className="text-secondary">Desk</span>
-              </span>
-            </div>
-            
-            <h1 className="text-4xl xl:text-5xl font-bold leading-tight mb-6">
-              Legal clarity for{' '}
-              <span className="text-accent">everyone.</span>
-            </h1>
-            
-            <ul className="space-y-4 text-lg text-primary-foreground/80">
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-accent" />
-                Know your rights in any situation
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-accent" />
-                Get documents analyzed instantly
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-accent" />
-                Connect with verified lawyers
-              </li>
-            </ul>
-          </div>
-          
-          <div className="absolute bottom-10 left-12 right-12 xl:left-20 xl:right-20">
-            <div className="h-px bg-gradient-to-r from-transparent via-primary-foreground/20 to-transparent" />
-            <p className="text-sm text-primary-foreground/50 mt-4 text-center">
-              Trusted by 50,000+ citizens across India
-            </p>
-          </div>
-        </div>
-      </div>
+  const features = [
+    { icon: ShieldCheck, text: 'Know your rights in any situation' },
+    { icon: FileSearch, text: 'AI-powered document analysis' },
+    { icon: Bot, text: 'Connect with verified advocates' },
+  ];
 
-      {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-md">
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-              <Scale className="w-6 h-6 text-primary-foreground" />
+  return (
+    <div style={{ minHeight: '100vh', backgroundColor: '#1c1c1c', display: 'flex', fontFamily: "'Inter', sans-serif" }}>
+
+      {/* Left panel */}
+      <div className="hidden lg:flex flex-col justify-between" style={{ width: '45%', backgroundColor: '#141414', borderRight: '1px solid #2a2a2a', padding: '48px 56px' }}>
+        <div>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 64 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: '#FFA116', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Scale style={{ width: 20, height: 20, color: '#141414' }} />
             </div>
-            <span className="text-2xl font-bold text-foreground">
-              Justice<span className="text-secondary">Desk</span>
+            <span style={{ fontSize: 20, fontWeight: 700, color: '#ededed' }}>
+              Justice<span style={{ color: '#FFA116' }}>Desk</span>
             </span>
           </div>
 
-          <Card className="border-0 shadow-elevated animate-scale-in">
-            <CardHeader className="space-y-1 pb-4">
-              <CardTitle className="text-2xl font-bold text-center">
-                Welcome back
-              </CardTitle>
-              <CardDescription className="text-center">
-                Sign in to access your legal dashboard
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Role Toggle */}
-              <div className="flex bg-muted rounded-lg p-1 mb-6">
-                <button
-                  type="button"
-                  onClick={() => setRole('citizen')}
-                  className={`flex-1 py-2.5 text-sm font-medium rounded-md transition-all duration-200 ${
-                    role === 'citizen'
-                      ? 'bg-card text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  Citizen
+          {/* Headline */}
+          <h1 style={{ fontSize: 36, fontWeight: 800, lineHeight: 1.2, color: '#fff', letterSpacing: '-0.02em', marginBottom: 16 }}>
+            Legal clarity<br />
+            for <span style={{ color: '#FFA116' }}>everyone.</span>
+          </h1>
+          <p style={{ fontSize: 15, color: '#888', lineHeight: 1.7, marginBottom: 40, maxWidth: 320 }}>
+            India's AI-powered legal rights platform — free for every citizen.
+          </p>
+
+          {/* Feature list */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {features.map(({ icon: Icon, text }) => (
+              <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: 'rgba(255,161,22,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Icon style={{ width: 18, height: 18, color: '#FFA116' }} />
+                </div>
+                <span style={{ fontSize: 14, color: '#ccc', fontWeight: 500 }}>{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Quote */}
+        <div style={{ padding: '20px 0', borderTop: '1px solid #2a2a2a' }}>
+          <p style={{ fontSize: 13, color: '#555', fontStyle: 'italic', lineHeight: 1.6 }}>"{quote}"</p>
+          <p style={{ fontSize: 11, color: '#444', marginTop: 8, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Trusted by 50,000+ citizens across India</p>
+        </div>
+      </div>
+
+      {/* Right panel — form */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px' }}>
+        <div style={{ width: '100%', maxWidth: 400 }}>
+
+          {/* Mobile logo */}
+          <div className="lg:hidden" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 36 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: '#FFA116', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Scale style={{ width: 18, height: 18, color: '#141414' }} />
+            </div>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#ededed' }}>
+              Justice<span style={{ color: '#FFA116' }}>Desk</span>
+            </span>
+          </div>
+
+          {/* Card */}
+          <div style={{ backgroundColor: '#232323', border: '1px solid #2e2e2e', borderRadius: 12, padding: '32px 28px' }}>
+            <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', marginBottom: 4, textAlign: 'center' }}>Welcome back</h2>
+            <p style={{ fontSize: 13, color: '#666', textAlign: 'center', marginBottom: 24 }}>Sign in to access your legal dashboard</p>
+
+            {/* Role Toggle */}
+            <div style={{ display: 'flex', backgroundColor: '#1a1a1a', borderRadius: 8, padding: 4, marginBottom: 24, border: '1px solid #2e2e2e' }}>
+              {(['citizen', 'lawyer'] as UserRole[]).map((r) => (
+                <button key={r} type="button" onClick={() => setRole(r)}
+                  style={{
+                    flex: 1, padding: '8px 0', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                    border: 'none', cursor: 'pointer', transition: 'all 0.15s',
+                    backgroundColor: role === r ? '#FFA116' : 'transparent',
+                    color: role === r ? '#141414' : '#888',
+                    fontFamily: "'Inter', sans-serif",
+                  }}>
+                  {r.charAt(0).toUpperCase() + r.slice(1)}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('lawyer')}
-                  className={`flex-1 py-2.5 text-sm font-medium rounded-md transition-all duration-200 ${
-                    role === 'lawyer'
-                      ? 'bg-card text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  Lawyer
-                </button>
+              ))}
+            </div>
+
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {/* Email */}
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#aaa', marginBottom: 6, letterSpacing: '0.03em' }}>EMAIL</label>
+                <input
+                  type="email" placeholder="name@example.com"
+                  value={email} onChange={(e) => setEmail(e.target.value)} required
+                  style={{ width: '100%', padding: '10px 14px', backgroundColor: '#1a1a1a', border: '1px solid #333', borderRadius: 8, fontSize: 14, color: '#ededed', fontFamily: "'Inter', sans-serif", outline: 'none', boxSizing: 'border-box' }}
+                  onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = '#FFA116')}
+                  onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = '#333')}
+                />
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+              {/* Password */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#aaa', letterSpacing: '0.03em' }}>PASSWORD</label>
+                  <Link to="/forgot-password" style={{ fontSize: 12, color: '#FFA116', textDecoration: 'none', fontWeight: 500 }}>Forgot password?</Link>
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showPassword ? 'text' : 'password'} placeholder="••••••••"
+                    value={password} onChange={(e) => setPassword(e.target.value)} required
+                    style={{ width: '100%', padding: '10px 40px 10px 14px', backgroundColor: '#1a1a1a', border: '1px solid #333', borderRadius: 8, fontSize: 14, color: '#ededed', fontFamily: "'Inter', sans-serif", outline: 'none', boxSizing: 'border-box' }}
+                    onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = '#FFA116')}
+                    onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = '#333')}
                   />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#555', display: 'flex', alignItems: 'center' }}>
+                    {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                  </button>
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
-                    <Link
-                      to="/forgot-password"
-                      className="text-sm text-secondary hover:underline"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <Button type="submit" variant="hero" size="lg" className="w-full" disabled={submitting}>
-                  {submitting ? 'Signing In...' : 'Sign In'}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </form>
-
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  Don't have an account?{' '}
-                  <Link to="/register" className="text-secondary font-medium hover:underline">
-                    Create account
-                  </Link>
-                </p>
               </div>
 
-              {/* Quote */}
-              <div className="mt-8 pt-6 border-t border-border">
-                <p className="text-sm text-muted-foreground italic text-center">
-                  "{quote}"
-                </p>
-              </div>
+              {/* Submit */}
+              <button type="submit" disabled={submitting}
+                style={{
+                  width: '100%', padding: '11px', backgroundColor: '#FFA116',
+                  border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 700,
+                  color: '#141414', cursor: submitting ? 'not-allowed' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  fontFamily: "'Inter', sans-serif",
+                  opacity: submitting ? 0.7 : 1, transition: 'all 0.15s',
+                }}
+                onMouseEnter={(e) => { if (!submitting) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#ff8c00'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#FFA116'; }}>
+                {submitting ? 'Signing In...' : 'Sign In'}
+                {!submitting && <ArrowRight style={{ width: 15, height: 15 }} />}
+              </button>
+            </form>
 
-              {/* Footer Links */}
-              <div className="mt-6 text-center space-y-2">
-                <p className="text-xs text-muted-foreground">
-                  <Link to="/terms" className="hover:underline text-secondary font-medium">
-                    Terms and Services
-                  </Link>
-                  {' · '}
-                  <Link to="/privacy" className="hover:underline text-secondary font-medium">
-                    Privacy Policy
-                  </Link>
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+            <p style={{ fontSize: 13, color: '#555', textAlign: 'center', marginTop: 20 }}>
+              Don't have an account?{' '}
+              <Link to="/register" style={{ color: '#FFA116', fontWeight: 600, textDecoration: 'none' }}>Create account</Link>
+            </p>
+
+            <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid #2a2a2a', display: 'flex', justifyContent: 'center', gap: 16 }}>
+              <Link to="/terms" style={{ fontSize: 11, color: '#444', textDecoration: 'none' }}>Terms of Service</Link>
+              <span style={{ color: '#333' }}>·</span>
+              <Link to="/privacy" style={{ fontSize: 11, color: '#444', textDecoration: 'none' }}>Privacy Policy</Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,15 +1,34 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Scale, Eye, EyeOff, ArrowRight, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
+import { Scale, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { justiceQuotes } from '@/data/mockData';
 
 type UserRole = 'citizen' | 'lawyer';
+
+const S = {
+  input: {
+    width: '100%',
+    padding: '10px 14px',
+    backgroundColor: '#1a1a1a',
+    border: '1px solid #333',
+    borderRadius: 8,
+    fontSize: 14,
+    color: '#ededed',
+    fontFamily: "'Inter', sans-serif",
+    outline: 'none',
+    boxSizing: 'border-box' as const,
+  },
+  label: {
+    display: 'block' as const,
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#aaa',
+    marginBottom: 6,
+    letterSpacing: '0.03em',
+  },
+};
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -29,283 +48,174 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!name.trim() || !email.trim() || !password.trim()) {
-      toast({
-        title: 'Missing Required Fields',
-        description: 'Please fill in your name, email, and password.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Missing Required Fields', description: 'Please fill in name, email, and password.', variant: 'destructive' });
       return;
     }
-
     setSubmitting(true);
     try {
-      const res = await register({
-        name,
-        email,
-        phone,
-        password,
-        role,
-        barNumber: role === 'lawyer' ? barNumber : undefined,
-      });
-
+      const res = await register({ name, email, phone, password, role, barNumber: role === 'lawyer' ? barNumber : undefined });
       if (res.success) {
-        toast({
-          title: 'Account Created!',
-          description: `Welcome to JusticeDesk, ${name}.`,
-        });
-        if (role === 'citizen') {
-          navigate('/citizen/dashboard');
-        } else {
-          navigate('/lawyer/dashboard');
-        }
+        toast({ title: 'Account Created!', description: 'Welcome to JusticeDesk.' });
+        navigate(role === 'citizen' ? '/citizen/dashboard' : '/lawyer/dashboard');
       } else {
-        toast({
-          title: 'Registration Failed',
-          description: res.error || 'Could not complete registration.',
-          variant: 'destructive',
-        });
+        toast({ title: 'Registration Failed', description: res.error || 'Please try again.', variant: 'destructive' });
       }
-    } catch (err) {
-      toast({
-        title: 'Error',
-        description: 'An unexpected error occurred during account creation.',
-        variant: 'destructive',
-      });
+    } catch {
+      toast({ title: 'Error', description: 'An unexpected error occurred.', variant: 'destructive' });
     } finally {
       setSubmitting(false);
     }
   };
 
-  const passwordStrength = password.length >= 8 ? 'strong' : password.length >= 4 ? 'medium' : 'weak';
+  const focusBorder = (e: React.FocusEvent<HTMLInputElement>) => {
+    (e.target as HTMLInputElement).style.borderColor = '#FFA116';
+  };
+  const blurBorder = (e: React.FocusEvent<HTMLInputElement>) => {
+    (e.target as HTMLInputElement).style.borderColor = '#333';
+  };
+
+  const benefits = [
+    'Free constitutional rights guidance 24/7',
+    'File & forward cases to Police or Advocates',
+    'AI-powered document review & analysis',
+  ];
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Left Panel - Hero Section */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
-        
-        <div className="relative z-10 flex flex-col justify-center px-12 xl:px-20 text-primary-foreground">
-          <div className="animate-fade-up">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-primary-foreground/10 flex items-center justify-center backdrop-blur-sm">
-                <Scale className="w-7 h-7 text-primary-foreground" />
-              </div>
-              <span className="text-3xl font-bold">
-                Justice<span className="text-secondary">Desk</span>
-              </span>
-            </div>
-            
-            <h1 className="text-4xl xl:text-5xl font-bold leading-tight mb-6">
-              Join thousands who've{' '}
-              <span className="text-accent">found clarity.</span>
-            </h1>
-            
-            <ul className="space-y-4 text-lg text-primary-foreground/80">
-              <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Check className="w-3.5 h-3.5 text-accent" />
-                </div>
-                Free access to all legal rights information
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Check className="w-3.5 h-3.5 text-accent" />
-                </div>
-                AI-powered document analysis
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Check className="w-3.5 h-3.5 text-accent" />
-                </div>
-                24/7 situation-based guidance
-              </li>
-            </ul>
-          </div>
-          
-          <div className="absolute bottom-10 left-12 right-12 xl:left-20 xl:right-20">
-            <div className="h-px bg-gradient-to-r from-transparent via-primary-foreground/20 to-transparent" />
-            <p className="text-sm text-primary-foreground/50 mt-4 text-center">
-              Your data is encrypted and secure
-            </p>
-          </div>
-        </div>
-      </div>
+    <div style={{ minHeight: '100vh', backgroundColor: '#1c1c1c', display: 'flex', fontFamily: "'Inter', sans-serif" }}>
 
-      {/* Right Panel - Register Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 overflow-y-auto">
-        <div className="w-full max-w-md py-8">
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-              <Scale className="w-6 h-6 text-primary-foreground" />
+      {/* Left panel */}
+      <div className="hidden lg:flex flex-col justify-between" style={{ width: '42%', backgroundColor: '#141414', borderRight: '1px solid #2a2a2a', padding: '48px 52px' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 56 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: '#FFA116', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Scale style={{ width: 19, height: 19, color: '#141414' }} />
             </div>
-            <span className="text-2xl font-bold text-foreground">
-              Justice<span className="text-secondary">Desk</span>
+            <span style={{ fontSize: 20, fontWeight: 700, color: '#ededed' }}>
+              Justice<span style={{ color: '#FFA116' }}>Desk</span>
             </span>
           </div>
 
-          <Card className="border-0 shadow-elevated animate-scale-in">
-            <CardHeader className="space-y-1 pb-4">
-              <CardTitle className="text-2xl font-bold text-center">
-                Create account
-              </CardTitle>
-              <CardDescription className="text-center">
-                Start your journey to legal empowerment
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Role Toggle */}
-              <div className="flex bg-muted rounded-lg p-1 mb-6">
-                <button
-                  type="button"
-                  onClick={() => setRole('citizen')}
-                  className={`flex-1 py-2.5 text-sm font-medium rounded-md transition-all duration-200 ${
-                    role === 'citizen'
-                      ? 'bg-card text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  Citizen
+          <h1 style={{ fontSize: 34, fontWeight: 800, lineHeight: 1.2, color: '#fff', letterSpacing: '-0.02em', marginBottom: 14 }}>
+            Your rights.<br />
+            <span style={{ color: '#FFA116' }}>Protected.</span>
+          </h1>
+          <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, marginBottom: 36, maxWidth: 300 }}>
+            Join 50,000+ citizens getting free, clear, confidential legal help powered by Indian law.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {benefits.map((b) => (
+              <div key={b} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                <CheckCircle2 style={{ width: 17, height: 17, color: '#FFA116', marginTop: 1, flexShrink: 0 }} />
+                <span style={{ fontSize: 14, color: '#bbb', lineHeight: 1.5 }}>{b}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid #2a2a2a', paddingTop: 20 }}>
+          <p style={{ fontSize: 13, color: '#555', fontStyle: 'italic', lineHeight: 1.6 }}>"{quote}"</p>
+        </div>
+      </div>
+
+      {/* Right panel */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', overflowY: 'auto' }}>
+        <div style={{ width: '100%', maxWidth: 420 }}>
+
+          {/* Mobile logo */}
+          <div className="lg:hidden" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 32 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: '#FFA116', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Scale style={{ width: 17, height: 17, color: '#141414' }} />
+            </div>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#ededed' }}>Justice<span style={{ color: '#FFA116' }}>Desk</span></span>
+          </div>
+
+          <div style={{ backgroundColor: '#232323', border: '1px solid #2e2e2e', borderRadius: 12, padding: '28px 24px' }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4, textAlign: 'center' }}>Create your account</h2>
+            <p style={{ fontSize: 13, color: '#666', textAlign: 'center', marginBottom: 22 }}>Get free legal guidance in minutes</p>
+
+            {/* Role toggle */}
+            <div style={{ display: 'flex', backgroundColor: '#1a1a1a', borderRadius: 8, padding: 4, marginBottom: 22, border: '1px solid #2e2e2e' }}>
+              {(['citizen', 'lawyer'] as UserRole[]).map((r) => (
+                <button key={r} type="button" onClick={() => setRole(r)}
+                  style={{
+                    flex: 1, padding: '8px 0', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                    border: 'none', cursor: 'pointer', transition: 'all 0.15s',
+                    backgroundColor: role === r ? '#FFA116' : 'transparent',
+                    color: role === r ? '#141414' : '#777',
+                    fontFamily: "'Inter', sans-serif",
+                  }}>
+                  {r.charAt(0).toUpperCase() + r.slice(1)}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('lawyer')}
-                  className={`flex-1 py-2.5 text-sm font-medium rounded-md transition-all duration-200 ${
-                    role === 'lawyer'
-                      ? 'bg-card text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  Lawyer
-                </button>
+              ))}
+            </div>
+
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <label style={S.label}>FULL NAME</label>
+                <input type="text" placeholder="Your full name" value={name} onChange={(e) => setName(e.target.value)} required
+                  style={S.input} onFocus={focusBorder} onBlur={blurBorder} />
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="Enter your full name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+91 XXXXX XXXXX"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-
-                {role === 'lawyer' && (
-                  <div className="space-y-2">
-                    <Label htmlFor="barNumber">Bar Council Number</Label>
-                    <Input
-                      id="barNumber"
-                      type="text"
-                      placeholder="Enter your bar registration number"
-                      value={barNumber}
-                      onChange={(e) => setBarNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                )}
-
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="Create a strong password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                  {password && (
-                    <div className="flex gap-1 mt-2">
-                      <div className={`h-1 flex-1 rounded-full ${
-                        passwordStrength === 'weak' ? 'bg-destructive' :
-                        passwordStrength === 'medium' ? 'bg-accent' : 'bg-green-500'
-                      }`} />
-                      <div className={`h-1 flex-1 rounded-full ${
-                        passwordStrength === 'medium' || passwordStrength === 'strong' ? 
-                        (passwordStrength === 'strong' ? 'bg-green-500' : 'bg-accent') : 'bg-muted'
-                      }`} />
-                      <div className={`h-1 flex-1 rounded-full ${
-                        passwordStrength === 'strong' ? 'bg-green-500' : 'bg-muted'
-                      }`} />
-                    </div>
-                  )}
-                </div>
-
-                <Button type="submit" variant="hero" size="lg" className="w-full" disabled={submitting}>
-                  {submitting ? 'Creating Account...' : 'Create Account'}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </form>
-
-              <p className="mt-4 text-xs text-center text-muted-foreground">
-                By creating an account, you agree to our{' '}
-                <Link to="/terms" className="text-secondary hover:underline">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="text-secondary hover:underline">
-                  Privacy Policy
-                </Link>
-              </p>
-
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  Already have an account?{' '}
-                  <Link to="/login" className="text-secondary font-medium hover:underline">
-                    Sign in
-                  </Link>
-                </p>
+              <div>
+                <label style={S.label}>EMAIL ADDRESS</label>
+                <input type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required
+                  style={S.input} onFocus={focusBorder} onBlur={blurBorder} />
               </div>
 
-              {/* Quote */}
-              <div className="mt-8 pt-6 border-t border-border">
-                <p className="text-sm text-muted-foreground italic text-center">
-                  "{quote}"
-                </p>
+              <div>
+                <label style={S.label}>PHONE <span style={{ color: '#555', fontWeight: 400 }}>(optional)</span></label>
+                <input type="tel" placeholder="+91 9876543210" value={phone} onChange={(e) => setPhone(e.target.value)}
+                  style={S.input} onFocus={focusBorder} onBlur={blurBorder} />
               </div>
-            </CardContent>
-          </Card>
+
+              {role === 'lawyer' && (
+                <div>
+                  <label style={S.label}>BAR COUNCIL NUMBER</label>
+                  <input type="text" placeholder="e.g. MH/1234/2022" value={barNumber} onChange={(e) => setBarNumber(e.target.value)}
+                    style={S.input} onFocus={focusBorder} onBlur={blurBorder} />
+                </div>
+              )}
+
+              <div>
+                <label style={S.label}>PASSWORD</label>
+                <div style={{ position: 'relative' }}>
+                  <input type={showPassword ? 'text' : 'password'} placeholder="Create a strong password" value={password} onChange={(e) => setPassword(e.target.value)} required
+                    style={{ ...S.input, paddingRight: 40 }} onFocus={focusBorder} onBlur={blurBorder} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#555', display: 'flex', alignItems: 'center' }}>
+                    {showPassword ? <EyeOff style={{ width: 15, height: 15 }} /> : <Eye style={{ width: 15, height: 15 }} />}
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" disabled={submitting}
+                style={{
+                  width: '100%', padding: '11px', backgroundColor: '#FFA116',
+                  border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 700,
+                  color: '#141414', cursor: submitting ? 'not-allowed' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  fontFamily: "'Inter', sans-serif", opacity: submitting ? 0.7 : 1, marginTop: 4,
+                }}
+                onMouseEnter={(e) => { if (!submitting) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#ff8c00'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#FFA116'; }}>
+                {submitting ? 'Creating Account...' : 'Create Account'}
+                {!submitting && <ArrowRight style={{ width: 15, height: 15 }} />}
+              </button>
+            </form>
+
+            <p style={{ fontSize: 13, color: '#555', textAlign: 'center', marginTop: 18 }}>
+              Already have an account?{' '}
+              <Link to="/login" style={{ color: '#FFA116', fontWeight: 600, textDecoration: 'none' }}>Sign in</Link>
+            </p>
+
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid #2a2a2a', display: 'flex', justifyContent: 'center', gap: 16 }}>
+              <Link to="/terms" style={{ fontSize: 11, color: '#444', textDecoration: 'none' }}>Terms of Service</Link>
+              <span style={{ color: '#333' }}>·</span>
+              <Link to="/privacy" style={{ fontSize: 11, color: '#444', textDecoration: 'none' }}>Privacy Policy</Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
