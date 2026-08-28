@@ -66,6 +66,21 @@ export const userDataStore = {
     return newCase;
   },
 
+  deleteCase(userId: string, caseId: string): boolean {
+    const cases = this.getCases(userId);
+    const filtered = cases.filter((c) => c.id !== caseId);
+    this.saveCases(userId, filtered);
+
+    this.addActivity(userId, {
+      type: 'case_update',
+      title: 'Case Deleted',
+      description: 'A legal case was removed from your profile.',
+      timestamp: new Date().toISOString(),
+    });
+
+    return true;
+  },
+
   // Documents
   getDocuments(userId: string): Document[] {
     try {

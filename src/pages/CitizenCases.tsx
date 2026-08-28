@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Plus, Filter, MoreVertical, Clock, CheckCircle2, AlertCircle, XCircle, ArrowLeft, MessageSquare, Phone, FileText } from 'lucide-react';
+import { Plus, Filter, MoreVertical, Clock, CheckCircle2, AlertCircle, XCircle, ArrowLeft, MessageSquare, Phone, FileText, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -94,6 +94,15 @@ const CitizenCases: React.FC = () => {
     setShowNewCaseDialog(false);
   };
 
+  const handleDeleteCase = (caseId: string) => {
+    if (!user?.id) return;
+    if (window.confirm('Are you sure you want to delete this case? This action cannot be undone.')) {
+      userDataStore.deleteCase(user.id, caseId);
+      setDisplayCases((prev) => prev.filter((c) => c.id !== caseId));
+      navigate('/citizen/cases');
+    }
+  };
+
   // Detail view for selected case
   if (selectedCaseId && selectedCase) {
     return (
@@ -176,6 +185,14 @@ const CitizenCases: React.FC = () => {
               <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => navigate('/citizen/documents')}>
                 <FileText className="w-4 h-4 mr-2" />
                 View Documents
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 sm:flex-auto border-red-500/30 text-red-500 hover:bg-red-500/10 hover:text-red-400"
+                onClick={() => handleDeleteCase(selectedCase.id)}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Case
               </Button>
             </div>
           </CardContent>
@@ -352,6 +369,16 @@ const CitizenCases: React.FC = () => {
                         })}
                       </p>
                     </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteCase(caseItem.id);
+                      }}
+                      className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+                      title="Delete Case"
+                    >
+                      <Trash2 className="w-4.5 h-4.5" />
+                    </button>
                   </div>
                 </CardContent>
               </Card>
