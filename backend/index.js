@@ -88,7 +88,7 @@ app.get('/api/health', (req, res) => {
 // Serve frontend in production (or when built)
 app.use(express.static(path.join(__dirname, '../dist')));
 
-app.get('*', (req, res) => {
+app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
 });
 
