@@ -4,11 +4,11 @@ import { Scale, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 const justiceQuotes = [
-  { text: 'Justice is the constant and perpetual will to allot every man his due.', author: 'Justinian I' },
-  { text: 'The law is reason, free from passion.', author: 'Aristotle' },
-  { text: 'Injustice anywhere is a threat to justice everywhere.', author: 'Martin Luther King Jr.' },
-  { text: 'The good of the people is the greatest law.', author: 'Cicero' },
-  { text: 'Equal justice under law.', author: 'U.S. Supreme Court' },
+  'Justice is the constant and perpetual will to allot every man his due.',
+  'The law is reason, free from passion.',
+  'Injustice anywhere is a threat to justice everywhere.',
+  'The good of the people is the greatest law.',
+  'Equal justice under law.',
 ];
 
 
