@@ -1,4 +1,4 @@
-import { User, Case, Document, RightsCategory, ActivityItem, SituationStep } from '@/types';
+﻿import { User, Case, Document, RightsCategory, ActivityItem, SituationStep } from '@/types';
 
 export const mockUser: User = {
   id: '1',

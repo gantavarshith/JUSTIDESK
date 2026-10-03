@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore, ConsultationItem } from '@/services/userDataStore';
 
 const CitizenConsultations: React.FC = () => {
   const { user } = useAuth();
@@ -35,7 +34,7 @@ const CitizenConsultations: React.FC = () => {
 
   useEffect(() => {
     if (user?.id) {
-      const items = userDataStore.getConsultations(user.id);
+      const items = [];
       setDisplayConsultations(items);
     }
   }, [user]);
@@ -78,7 +77,7 @@ const CitizenConsultations: React.FC = () => {
     if (window.confirm('Are you sure you want to cancel this consultation?')) {
       const updated = displayConsultations.filter((c) => c.id !== id);
       setDisplayConsultations(updated);
-      userDataStore.saveConsultations(user.id, updated);
+      console.log("DB Action required here");
       toast({ title: 'Cancelled', description: 'Consultation removed.' });
     }
   };

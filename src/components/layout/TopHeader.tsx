@@ -7,7 +7,6 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore } from '@/services/userDataStore';
 import { ActivityItem } from '@/types';
 
 interface TopHeaderProps {
@@ -31,9 +30,9 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
 
   useEffect(() => {
     if (user?.id) {
-      setActivities(userDataStore.getActivities(user.id));
+      setActivities([]);
       try {
-        const storedRead = localStorage.getItem(`justicedesk_user_read_notifications_${user.id}`);
+        const storedRead = localStorage.getItem(`justifind_user_read_notifications_${user.id}`);
         if (storedRead) setReadIds(JSON.parse(storedRead));
       } catch (e) {}
     }
@@ -42,7 +41,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
   const saveReadIds = (ids: string[]) => {
     setReadIds(ids);
     if (user?.id) {
-      try { localStorage.setItem(`justicedesk_user_read_notifications_${user.id}`, JSON.stringify(ids)); } catch (e) {}
+      try { localStorage.setItem(`justifind_user_read_notifications_${user.id}`, JSON.stringify(ids)); } catch (e) {}
     }
   };
 
@@ -62,7 +61,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
   const handleSignOut = () => {
     signOut();
     toast({ title: 'Signed out', description: 'You have been signed out.' });
-    navigate('/login');
+    navigate('/');
   };
 
   return (

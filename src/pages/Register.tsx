@@ -3,7 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Scale, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { justiceQuotes } from '@/data/mockData';
+const justiceQuotes = [
+  { text: 'Justice is the constant and perpetual will to allot every man his due.', author: 'Justinian I' },
+  { text: 'The law is reason, free from passion.', author: 'Aristotle' },
+  { text: 'Injustice anywhere is a threat to justice everywhere.', author: 'Martin Luther King Jr.' },
+  { text: 'The good of the people is the greatest law.', author: 'Cicero' },
+  { text: 'Equal justice under law.', author: 'U.S. Supreme Court' },
+];
+
 
 type UserRole = 'citizen' | 'lawyer';
 
@@ -56,7 +63,7 @@ const Register: React.FC = () => {
     try {
       const res = await register({ name, email, phone, password, role, barNumber: role === 'lawyer' ? barNumber : undefined });
       if (res.success) {
-        toast({ title: 'Account Created!', description: 'Welcome to JusticeDesk.' });
+        toast({ title: 'Account Created!', description: 'Welcome to JustiFind.' });
         navigate(role === 'citizen' ? '/citizen/dashboard' : '/lawyer/dashboard');
       } else {
         toast({ title: 'Registration Failed', description: res.error || 'Please try again.', variant: 'destructive' });
@@ -92,7 +99,7 @@ const Register: React.FC = () => {
               <Scale style={{ width: 19, height: 19, color: '#141414' }} />
             </div>
             <span style={{ fontSize: 20, fontWeight: 700, color: '#ededed' }}>
-              Justice<span style={{ color: '#FFA116' }}>Desk</span>
+              Justi<span style={{ color: '#FFA116' }}>Find</span>
             </span>
           </div>
 
@@ -128,7 +135,7 @@ const Register: React.FC = () => {
             <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: '#FFA116', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Scale style={{ width: 17, height: 17, color: '#141414' }} />
             </div>
-            <span style={{ fontSize: 18, fontWeight: 700, color: '#ededed' }}>Justice<span style={{ color: '#FFA116' }}>Desk</span></span>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#ededed' }}>Justi<span style={{ color: '#FFA116' }}>Find</span></span>
           </div>
 
           <div style={{ backgroundColor: '#232323', border: '1px solid #2e2e2e', borderRadius: 12, padding: '28px 24px' }}>

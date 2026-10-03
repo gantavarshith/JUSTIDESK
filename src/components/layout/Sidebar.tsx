@@ -51,7 +51,7 @@ export const Sidebar: React.FC = () => {
           </div>
           <div>
             <span className="font-bold text-lg tracking-tight" style={{ color: '#eff2f6' }}>
-              Justice<span style={{ color: '#FFA116' }}>Desk</span>
+              Justi<span style={{ color: '#FFA116' }}>Find</span>
             </span>
           </div>
         </NavLink>
@@ -136,7 +136,7 @@ export const Sidebar: React.FC = () => {
           );
         })}
         <button
-          onClick={() => { try { signOut(); } catch (e) {} navigate('/login'); }}
+          onClick={() => { try { signOut(); } catch (e) {} navigate('/'); }}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg w-full text-left text-sm transition-all duration-150"
           style={{ color: '#ababab' }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,55,95,0.08)'; (e.currentTarget as HTMLElement).style.color = '#ff375f'; }}

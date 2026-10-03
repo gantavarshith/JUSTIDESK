@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore } from '@/services/userDataStore';
 import { Case } from '@/types';
 
 const statusConfig = {
@@ -52,8 +51,18 @@ const CitizenCases: React.FC = () => {
 
   useEffect(() => {
     if (user?.id) {
-      const userCases = userDataStore.getCases(user.id);
-      setDisplayCases(userCases);
+      fetch('/api/cases')
+        .then((res) => res.json())
+        .then((data) => {
+          // Map MongoDB _id to frontend expected id
+          const mappedCases = data.map((c: any) => ({
+            ...c,
+            id: c._id,
+            // the backend model has title, description, status, type (if you added it)
+          }));
+          setDisplayCases(mappedCases);
+        })
+        .catch((err) => console.error('Error fetching cases:', err));
     }
   }, [user]);
 
@@ -97,7 +106,7 @@ const CitizenCases: React.FC = () => {
   const handleDeleteCase = (caseId: string) => {
     if (!user?.id) return;
     if (window.confirm('Are you sure you want to delete this case? This action cannot be undone.')) {
-      userDataStore.deleteCase(user.id, caseId);
+      console.log("DB Action required here");
       setDisplayCases((prev) => prev.filter((c) => c.id !== caseId));
       navigate('/citizen/cases');
     }

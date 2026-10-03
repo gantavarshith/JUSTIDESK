@@ -3,7 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Scale, Eye, EyeOff, ArrowRight, ShieldCheck, Bot, FileSearch } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { justiceQuotes } from '@/data/mockData';
+const justiceQuotes = [
+  { text: 'Justice is the constant and perpetual will to allot every man his due.', author: 'Justinian I' },
+  { text: 'The law is reason, free from passion.', author: 'Aristotle' },
+  { text: 'Injustice anywhere is a threat to justice everywhere.', author: 'Martin Luther King Jr.' },
+  { text: 'The good of the people is the greatest law.', author: 'Cicero' },
+  { text: 'Equal justice under law.', author: 'U.S. Supreme Court' },
+];
+
 
 type UserRole = 'citizen' | 'lawyer';
 
@@ -60,7 +67,7 @@ const Login: React.FC = () => {
               <Scale style={{ width: 20, height: 20, color: '#141414' }} />
             </div>
             <span style={{ fontSize: 20, fontWeight: 700, color: '#ededed' }}>
-              Justice<span style={{ color: '#FFA116' }}>Desk</span>
+              Justi<span style={{ color: '#FFA116' }}>Find</span>
             </span>
           </div>
 
@@ -103,7 +110,7 @@ const Login: React.FC = () => {
               <Scale style={{ width: 18, height: 18, color: '#141414' }} />
             </div>
             <span style={{ fontSize: 18, fontWeight: 700, color: '#ededed' }}>
-              Justice<span style={{ color: '#FFA116' }}>Desk</span>
+              Justi<span style={{ color: '#FFA116' }}>Find</span>
             </span>
           </div>
 

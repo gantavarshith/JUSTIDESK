@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { RightsCategoryCard } from '@/components/rights/RightsCategoryCard';
 import { RightCard } from '@/components/rights/RightCard';
 import { SituationHelper } from '@/components/situation/SituationHelper';
-import { mockRightsCategories, justiceQuotes } from '@/data/mockData';
+import { mockRightsCategories, justiceQuotes } from '@/data/staticData';
 import { RightsCategory } from '@/types';
 
 const KnowYourRights: React.FC = () => {

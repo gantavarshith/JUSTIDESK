@@ -29,7 +29,7 @@ const QUICK_TOPICS = [
   { label: 'Domestic Violence', query: 'I am facing domestic violence. What legal protection do I have under Indian law?' },
 ];
 
-const WELCOME_MESSAGE = `Hello! I'm your JusticeDesk AI Legal Counsel.
+const WELCOME_MESSAGE = `Hello! I'm your JustiFind AI Legal Counsel.
 
 I'm here to help you understand your legal rights under Indian law and guide you through any legal situation you're facing — whether it's a workplace dispute, tenant issues, consumer complaints, police matters, or family law.
 
@@ -110,14 +110,14 @@ const AIChatWithLawyer: React.FC = () => {
 
   const handleExport = () => {
     const lines = displayMessages.map((m) => {
-      const role = m.role === 'user' ? 'You' : 'JusticeDesk AI';
+      const role = m.role === 'user' ? 'You' : 'JustiFind AI';
       return `[${m.timestamp.toLocaleTimeString()}] ${role}:\n${m.text}`;
     }).join('\n\n---\n\n');
     const blob = new Blob([lines], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `JusticeDesk_Consultation_${new Date().toISOString().slice(0, 10)}.txt`;
+    a.download = `JustiFind_Consultation_${new Date().toISOString().slice(0, 10)}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };

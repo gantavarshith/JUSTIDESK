@@ -25,7 +25,6 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore } from '@/services/userDataStore';
 
 const CATEGORIES = [
   { id: 'Property', label: 'Property & Rent', desc: 'Land disputes, eviction, landlord issues' },
@@ -73,7 +72,7 @@ const FileCase: React.FC = () => {
     }
   };
 
-  const handleSubmitCase = () => {
+  const handleSubmitCase = async () => {
     if (!title.trim() || !description.trim()) {
       toast({
         title: 'Missing Required Fields',
@@ -85,12 +84,39 @@ const FileCase: React.FC = () => {
     if (!user?.id) return;
 
     setIsSubmitting(true);
+    
+    const casePayload = {
+      title: title.trim(),
+      description: `${description.trim()}\n\n[Location: ${location || 'N/A'} | Incident Date: ${incidentDate || 'N/A'}]`,
+      status: urgency === 'emergency' ? 'pending' : 'in-progress',
+      filedBy: user.id // The backend will handle mapping this to a MongoDB ObjectId
+    };
+
+    try {
+      // 1. Send data to MongoDB Backend
+      const response = await fetch('/api/cases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(casePayload),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to save case to database');
+      } else {
+        const dbCase = await response.json();
+        console.log('Successfully saved to MongoDB:', dbCase);
+      }
+    } catch (error) {
+      console.error('Error connecting to backend:', error);
+    }
+
+    // 2. Also keep local state update so the rest of the UI doesn't break
     setTimeout(() => {
       const newCase = userDataStore.addCase(user.id, {
-        title: title.trim(),
+        title: casePayload.title,
         type: category,
-        status: urgency === 'emergency' ? 'pending' : 'active',
-        description: `${description.trim()}\n\n[Location: ${location || 'N/A'} | Incident Date: ${incidentDate || 'N/A'}]`,
+        status: casePayload.status,
+        description: casePayload.description,
       });
 
       attachedFiles.forEach((fileName) => {
@@ -120,7 +146,7 @@ const FileCase: React.FC = () => {
 
     const targetNames = {
       police: 'Local Police Station & Cybercrime Cell',
-      advocates: 'JusticeDesk Verified Advocates Network',
+      advocates: 'JustiFind Verified Advocates Network',
       dlsa: 'District Legal Services Authority (DLSA)',
     };
 

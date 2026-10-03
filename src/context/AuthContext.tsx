@@ -18,8 +18,8 @@ interface AuthContextType {
   signOut: () => void;
 }
 
-const STORAGE_KEY_SESSION = 'justicedesk_session';
-const STORAGE_KEY_USERS = 'justicedesk_users';
+const STORAGE_KEY_SESSION = 'justifind_session';
+const STORAGE_KEY_USERS = 'justifind_users';
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -107,6 +107,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (userData: { name: string; email: string; phone?: string; password?: string; role: 'citizen' | 'lawyer'; barNumber?: string }) => {
     setIsLoading(true);
     try {
+      // Send user data to MongoDB backend
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: userData.name,
+          email: userData.email,
+          password: userData.password || 'defaultpass123',
+          role: userData.role
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Failed to create user in database');
+      } else {
+        console.log('Successfully created user in MongoDB');
+      }
+
+      // Maintain local session for UI continuity
       const newUser: UserProfile = {
         id: Math.random().toString(36).substring(2, 9),
         name: userData.name,

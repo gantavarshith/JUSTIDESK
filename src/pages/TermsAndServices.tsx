@@ -27,10 +27,10 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                By accessing and using JusticeDesk ("the Platform"), you accept and agree to be bound by and abide by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                By accessing and using JustiFind ("the Platform"), you accept and agree to be bound by and abide by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
               </p>
               <p className="text-foreground">
-                JusticeDesk is a legal information and case management platform designed to help citizens understand their legal rights, manage legal documents, and connect with qualified legal professionals.
+                JustiFind is a legal information and case management platform designed to help citizens understand their legal rights, manage legal documents, and connect with qualified legal professionals.
               </p>
             </CardContent>
           </Card>
@@ -42,7 +42,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                Permission is granted to temporarily download one copy of the materials (information or software) on JusticeDesk for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+                Permission is granted to temporarily download one copy of the materials (information or software) on JustiFind for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
               </p>
               <ul className="list-disc list-inside space-y-2 text-foreground">
                 <li>Modifying or copying the materials</li>
@@ -62,10 +62,10 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                The materials on JusticeDesk are provided on an "as-is" basis. JusticeDesk makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                The materials on JustiFind are provided on an "as-is" basis. JustiFind makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
               </p>
               <p className="text-foreground font-semibold text-accent">
-                ⚠️ Legal Disclaimer: The information provided on JusticeDesk is for general informational purposes only and does not constitute legal advice. You should not rely solely on this Platform for legal matters. Consult with a qualified attorney for advice specific to your situation.
+                ⚠️ Legal Disclaimer: The information provided on JustiFind is for general informational purposes only and does not constitute legal advice. You should not rely solely on this Platform for legal matters. Consult with a qualified attorney for advice specific to your situation.
               </p>
             </CardContent>
           </Card>
@@ -77,7 +77,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                In no event shall JusticeDesk or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on JusticeDesk, even if JusticeDesk or an authorized representative has been notified orally or in writing of the possibility of such damage.
+                In no event shall JustiFind or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on JustiFind, even if JustiFind or an authorized representative has been notified orally or in writing of the possibility of such damage.
               </p>
             </CardContent>
           </Card>
@@ -89,7 +89,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                The materials appearing on JusticeDesk could include technical, typographical, or photographic errors. JusticeDesk does not warrant that any of the materials on the Platform are accurate, complete, or current. JusticeDesk may make changes to the materials contained on the Platform at any time without notice.
+                The materials appearing on JustiFind could include technical, typographical, or photographic errors. JustiFind does not warrant that any of the materials on the Platform are accurate, complete, or current. JustiFind may make changes to the materials contained on the Platform at any time without notice.
               </p>
             </CardContent>
           </Card>
@@ -101,7 +101,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                JusticeDesk has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by JusticeDesk of the site. Use of any such linked website is at the user's own risk.
+                JustiFind has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by JustiFind of the site. Use of any such linked website is at the user's own risk.
               </p>
             </CardContent>
           </Card>
@@ -113,7 +113,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                JusticeDesk may revise these terms of service for the Platform at any time without notice. By using the Platform, you are agreeing to be bound by the then current version of these terms of service.
+                JustiFind may revise these terms of service for the Platform at any time without notice. By using the Platform, you are agreeing to be bound by the then current version of these terms of service.
               </p>
             </CardContent>
           </Card>
@@ -125,7 +125,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                When you create an account on JusticeDesk, you are responsible for maintaining the confidentiality of your password and account information. You agree to accept responsibility for all activities that occur under your account. You must immediately notify JusticeDesk of any unauthorized use of your account.
+                When you create an account on JustiFind, you are responsible for maintaining the confidentiality of your password and account information. You agree to accept responsibility for all activities that occur under your account. You must immediately notify JustiFind of any unauthorized use of your account.
               </p>
             </CardContent>
           </Card>
@@ -137,7 +137,7 @@ const TermsAndServices: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-foreground">
-                You agree not to use JusticeDesk for any purpose that is unlawful or prohibited by these terms and conditions. Specifically, you agree not to:
+                You agree not to use JustiFind for any purpose that is unlawful or prohibited by these terms and conditions. Specifically, you agree not to:
               </p>
               <ul className="list-disc list-inside space-y-2 text-foreground">
                 <li>Post or transmit any defamatory, offensive, or illegal content</li>
@@ -172,8 +172,8 @@ const TermsAndServices: React.FC = () => {
                 If you have any questions about these Terms and Services, please contact us at:
               </p>
               <div className="mt-4 space-y-1">
-                <p className="text-foreground font-medium">JusticeDesk Support</p>
-                <p className="text-foreground">Email: support@justicedesk.com</p>
+                <p className="text-foreground font-medium">JustiFind Support</p>
+                <p className="text-foreground">Email: support@justifind.com</p>
                 <p className="text-foreground">Address: New Delhi, India</p>
               </div>
             </CardContent>

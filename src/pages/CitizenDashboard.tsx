@@ -18,7 +18,6 @@ import { QuickHelpCard } from '@/components/dashboard/QuickHelpCard';
 import { ActivityTimeline } from '@/components/dashboard/ActivityTimeline';
 import { SituationHelper } from '@/components/situation/SituationHelper';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore } from '@/services/userDataStore';
 
 const CitizenDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -33,11 +32,11 @@ const CitizenDashboard: React.FC = () => {
 
   useEffect(() => {
     if (user?.id) {
-      const cases = userDataStore.getCases(user.id);
-      const docs = userDataStore.getDocuments(user.id);
-      const forms = userDataStore.getForms(user.id);
-      const consultations = userDataStore.getConsultations(user.id);
-      const userActivities = userDataStore.getActivities(user.id);
+      const cases = [];
+      const docs = [];
+      const forms = [];
+      const consultations = [];
+      const userActivities = [];
 
       setCasesCount(cases.length);
       setDocsCount(docs.length);

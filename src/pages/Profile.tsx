@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
   const handleSignOut = () => {
     signOut();
     toast({ title: 'Signed Out', description: 'You have been logged out of your session.' });
-    navigate('/login');
+    navigate('/');
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {

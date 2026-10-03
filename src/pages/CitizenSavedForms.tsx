@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore, SavedFormItem } from '@/services/userDataStore';
 
 const CitizenSavedForms: React.FC = () => {
   const { user } = useAuth();
@@ -28,7 +27,7 @@ const CitizenSavedForms: React.FC = () => {
 
   useEffect(() => {
     if (user?.id) {
-      const userForms = userDataStore.getForms(user.id);
+      const userForms = [];
       setForms(userForms);
     }
   }, [user]);
@@ -70,7 +69,7 @@ const CitizenSavedForms: React.FC = () => {
         : f
     );
     setForms(updatedForms);
-    userDataStore.saveForms(user.id, updatedForms);
+    console.log("DB Action required here");
     toast({ title: 'Draft Saved', description: 'Form content saved successfully.' });
   };
 
@@ -83,7 +82,7 @@ const CitizenSavedForms: React.FC = () => {
           : f
       );
       setForms(updatedForms);
-      userDataStore.saveForms(user.id, updatedForms);
+      console.log("DB Action required here");
       setSelectedForm(null);
       toast({ title: 'Submitted', description: 'Form has been marked as submitted.' });
     }
@@ -94,7 +93,7 @@ const CitizenSavedForms: React.FC = () => {
     if (window.confirm(`Are you sure you want to delete "${formTitle}"?`)) {
       const updatedForms = forms.filter((f) => f.id !== formId);
       setForms(updatedForms);
-      userDataStore.saveForms(user.id, updatedForms);
+      console.log("DB Action required here");
       if (selectedForm?.id === formId) {
         setSelectedForm(null);
       }

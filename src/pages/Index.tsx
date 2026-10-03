@@ -145,9 +145,9 @@ const stats = [
 ];
 
 const testimonials = [
-  { q: '"JusticeDesk gave me exact rent-control sections and drafted an emergency police notice in 5 minutes when my landlord tried an illegal lockout."', name: 'Rajesh K.', role: 'Citizen · Bengaluru' },
+  { q: '"JustiFind gave me exact rent-control sections and drafted an emergency police notice in 5 minutes when my landlord tried an illegal lockout."', name: 'Rajesh K.', role: 'Citizen · Bengaluru' },
   { q: '"The AI document analyzer instantly flagged unfair liability clauses in my employment contract before I signed."', name: 'Ananya M.', role: 'Software Engineer · Hyderabad' },
-  { q: '"As a practising advocate, JusticeDesk streamlines initial case fact-gathering and evidence packaging for clients."', name: 'Adv. Suresh Verma', role: 'High Court Advocate · Delhi' },
+  { q: '"As a practising advocate, JustiFind streamlines initial case fact-gathering and evidence packaging for clients."', name: 'Adv. Suresh Verma', role: 'High Court Advocate · Delhi' },
 ];
 
 const footerLinks = [
@@ -179,7 +179,7 @@ const Index: React.FC = () => {
               <Scale style={{ width: 18, height: 18, color: '#141414' }} />
             </div>
             <span style={{ fontSize: 19, fontWeight: 700, color: C.text }}>
-              Justice<span style={{ color: C.orange }}>Desk</span>
+              Justi<span style={{ color: C.orange }}>Find</span>
             </span>
           </Link>
 
@@ -426,7 +426,7 @@ const Index: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Scale style={{ width: 18, height: 18, color: C.orange }} />
-              <span style={{ fontSize: 17, fontWeight: 700, color: C.text }}>Justice<span style={{ color: C.orange }}>Desk</span></span>
+              <span style={{ fontSize: 17, fontWeight: 700, color: C.text }}>Justi<span style={{ color: C.orange }}>Find</span></span>
             </div>
             <p style={{ fontSize: 13, color: C.dim, lineHeight: 1.7, margin: 0 }}>
               Empowering Indian citizens with legal knowledge, AI document analysis, and direct advocate connections.
@@ -476,9 +476,9 @@ const Index: React.FC = () => {
         </div>
 
         <div style={{ borderTop: `1px solid ${C.border}`, padding: '18px 24px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontSize: 12, color: '#444', margin: 0 }}>© 2026 JusticeDesk. All rights reserved.</p>
+          <p style={{ fontSize: 12, color: '#444', margin: 0 }}>© 2026 JustiFind. All rights reserved.</p>
           <p style={{ fontSize: 12, color: '#444', margin: 0 }}>
-            Disclaimer: JusticeDesk provides legal information only and does not substitute formal legal representation.
+            Disclaimer: JustiFind provides legal information only and does not substitute formal legal representation.
           </p>
         </div>
       </footer>

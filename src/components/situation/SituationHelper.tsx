@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { situationSteps } from '@/data/mockData';
+import { situationSteps } from '@/data/staticData';
 import { SituationStep } from '@/types';
 import { AlertTriangle, ArrowLeft, CheckCircle2, Phone, Copy } from 'lucide-react';
 import { cn } from '@/lib/utils';

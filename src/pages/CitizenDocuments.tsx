@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { userDataStore } from '@/services/userDataStore';
 import { Document } from '@/types';
 
 const statusConfig = {
@@ -40,7 +39,7 @@ const CitizenDocuments: React.FC = () => {
 
   useEffect(() => {
     if (user?.id) {
-      const userDocs = userDataStore.getDocuments(user.id);
+      const userDocs = [];
       setDisplayDocuments(userDocs);
     }
   }, [user]);
@@ -93,7 +92,7 @@ const CitizenDocuments: React.FC = () => {
     if (window.confirm(`Are you sure you want to delete "${docName}"?`)) {
       const updated = displayDocuments.filter((doc) => doc.id !== docId);
       setDisplayDocuments(updated);
-      userDataStore.saveDocuments(user.id, updated);
+      console.log("DB Action required here");
       setShowPreview(false);
     }
   };
@@ -108,7 +107,7 @@ const CitizenDocuments: React.FC = () => {
           : doc
       );
       setDisplayDocuments(updated);
-      userDataStore.saveDocuments(user.id, updated);
+      console.log("DB Action required here");
       setAnalyzeLoading(null);
     }, 1200);
   };
