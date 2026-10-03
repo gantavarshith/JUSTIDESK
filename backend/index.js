@@ -85,12 +85,15 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'API is running' });
 });
 
-// Serve frontend in production (or when built)
-app.use(express.static(path.join(__dirname, '../dist')));
-
-app.get('/{*splat}', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
-});
+// Serve frontend only if dist folder exists (for single-server deploys)
+const distPath = path.join(__dirname, '../dist');
+const fs = require('fs');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('/{*splat}', (req, res) => {
+    res.sendFile(path.resolve(distPath, 'index.html'));
+  });
+}
 
 // Start the server
 app.listen(PORT, () => {
